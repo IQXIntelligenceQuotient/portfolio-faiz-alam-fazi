@@ -1,3 +1,4 @@
+import { initialPost } from '../../utils/ssgData.js';
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import SEOHead from "../../components/seo/SEOHead";
@@ -13,7 +14,7 @@ const getImageUrl = (imagePath) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
   const path = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-  return `${import.meta.env.VITE_API_BASE_URL}${path}`;
+  return `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}${path}`;
 };
 
 function buildArticleSchema(blog) {
@@ -134,9 +135,9 @@ function FAQItem({ faq }) {
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState(() => initialPost(slug));
   const [relatedBlogs, setRelatedBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !initialPost(slug));
   const [error, setError] = useState(null);
 
   // Fetch blog post from API
@@ -144,7 +145,7 @@ export default function BlogPost() {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        const API_URL = import.meta.env.VITE_POSTS_API || `${import.meta.env.VITE_API_BASE_URL}/api/posts`;
+        const API_URL = import.meta.env.VITE_POSTS_API || `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}/api/posts`;
         const response = await fetch(`${API_URL}/${slug}`);
         
         if (!response.ok) {
@@ -768,7 +769,7 @@ function ContactFormSection() {
     }
 
     try {
-      const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
       const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: {

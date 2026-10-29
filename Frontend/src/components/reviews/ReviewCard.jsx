@@ -40,7 +40,7 @@ export default function ReviewCard({ review, truncate = false }) {
     helpful = 0,
   } = review || {};
 
-  const [helpfulCount, setHelpfulCount] = useState(helpful);
+  const [_helpfulCount, setHelpfulCount] = useState(helpful);
   const [clicked, setClicked] = useState(false);
   const [showFullMessage, setShowFullMessage] = useState(false);
 

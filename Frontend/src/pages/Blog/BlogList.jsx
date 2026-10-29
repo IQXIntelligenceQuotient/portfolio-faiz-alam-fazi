@@ -1,10 +1,11 @@
+import { initialPosts } from '../../utils/ssgData.js';
 import React, { useMemo, useState, useEffect } from "react";
 import BlogCard from "../../components/blog/BlogCard";
 import SEOHead from "../../components/seo/SEOHead";
 
 export default function BlogList() {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState(initialPosts);
+  const [loading, setLoading] = useState(() => initialPosts().length === 0);
   const [error, setError] = useState(null);
   const [active, setActive] = useState("All");
 
@@ -13,7 +14,7 @@ export default function BlogList() {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const API_URL = import.meta.env.VITE_POSTS_API || `${import.meta.env.VITE_API_BASE_URL}/api/posts`;
+        const API_URL = import.meta.env.VITE_POSTS_API || `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}/api/posts`;
         const response = await fetch(API_URL);
         
         if (!response.ok) {

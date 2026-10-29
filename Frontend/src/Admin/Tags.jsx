@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
 const TAGS_API = import.meta.env.VITE_TAGS_API || `${API_BASE_URL}/api/tags`;
 const CATEGORIES_API = import.meta.env.VITE_CATEGORIES_API || `${API_BASE_URL}/api/categories`;
 
@@ -117,7 +117,7 @@ function CategoryTagTable({ category, tags, onEdit, onDelete, deletingId }) {
   );
 }
 
-function Tags({ selectedCategory = null }) {
+function Tags({ _selectedCategory = null }) {
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryTags, setCategoryTags] = useState({});
@@ -196,7 +196,7 @@ function Tags({ selectedCategory = null }) {
     }, 300);
   }, []);
 
-  const displayedTags = searchResults !== null ? searchResults : tags;
+  const _displayedTags = searchResults !== null ? searchResults : tags;
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
 
 // GET all contacts
 const CONTACTS_ADMIN_API =
@@ -17,7 +17,7 @@ const CONTACTS_DELETE_API = `${API_BASE_URL}/api/contact/admin`;
 function Contacts() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [updatingId, setUpdatingId] = useState(null);
+  const [_updatingId, setUpdatingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
   const [search, setSearch] = useState("");
@@ -76,7 +76,7 @@ function Contacts() {
   };
 
   // Inquiry status — admin manual control only
-  const handleInquiryStatusChange = async (contact, newInquiryStatus) => {
+  const _handleInquiryStatusChange = async (contact, newInquiryStatus) => {
     try {
       setUpdatingId(contact.id);
       const response = await fetch(`${CONTACTS_BASE_API}/${contact.id}/status`, {

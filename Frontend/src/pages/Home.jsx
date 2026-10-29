@@ -55,7 +55,7 @@ function CountUpNumber({ value, suffix = '', duration = 1600 }) {
     </span>
   );
 }
-const accordions = [
+const _accordions = [
   {
     title: 'Trusted Legal Consultancy for Individuals and Businesses',
     content:
@@ -870,7 +870,7 @@ export default function Home() {
           {/* Award cards */}
           <div className="space-y-6 sm:space-y-8 lg:space-y-10">
             {awards.map((award, idx) => {
-              const isHovered = hoveredAward === idx;
+              const _isHovered = hoveredAward === idx;
 
               return (
                 <motion.div

@@ -3,10 +3,10 @@ import ShareButtons from "../components/share/ShareButtons";
 
 const CATEGORIES_API =
   (import.meta.env.VITE_CATEGORIES_API) ||
-  `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000")}/api/categories`;
+  `${(import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000"))}/api/categories`;
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
 
 const POSTS_API =
   import.meta.env.VITE_POSTS_API || `${API_BASE_URL}/api/posts`;
@@ -69,7 +69,7 @@ function Posts() {
     if (!imagePath) return "";
     if (imagePath.startsWith("http")) return imagePath;
     const path = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-    return `${import.meta.env.VITE_API_BASE_URL}${path}`;
+    return `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}${path}`;
   };
 
   const formatDate = (date) => {

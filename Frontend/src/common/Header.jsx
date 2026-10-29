@@ -62,9 +62,9 @@ const handleLogout = () => {
   }, []);
 
   useEffect(() => {
-    handleScroll();
+    const frame = requestAnimationFrame(handleScroll);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', handleScroll); };
   }, [handleScroll]);
 
   useEffect(() => {

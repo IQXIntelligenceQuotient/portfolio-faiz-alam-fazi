@@ -1,111 +1,56 @@
-# 🚀 Final Deployment Checklist
+# Production deployment: GitHub Pages + Hostinger
 
-## ✅ What's Fixed
+Repository: https://github.com/IQXIntelligenceQuotient/portfolio-faiz-alam-fazi
 
-1. **Database Connection** - `db.js` now properly uses `DATABASE_URL` from `.env`
-2. **Environment Variables** - `.env` file has correct Neon PostgreSQL connection string
-3. **CORS Headers** - Configured in both `.htaccess` and `server.js`
-4. **Deployment Package** - Ready at `Backend/hostinger-deploy/`
+## Local changes and release
 
-## 📦 Deployment Steps
+Keep Frontend/ and Backend/ together. Only Frontend/dist is uploaded to Pages. Review and commit the changes (including staged dependency/environment removals), then push main. This work does not itself publish or change DNS.
 
-### 1. Upload Files to Hostinger
+From Frontend run `npm ci`, `npm run lint`, `npm run build`, `npm run verify:build`. Node 24 is used in CI. The build fetches all published articles from the production API and fails if discovery or article fetch fails, instead of deploying empty blog pages. Rebuild with Actions > Deploy frontend to GitHub Pages > Run workflow whenever CMS articles change. Existing articles remain readable without JavaScript. Browser interactions mount React over the static content; metadata ownership is transferred before mounting. Do not use this build for a repository subpath: it intentionally targets the requested custom domain at /.
 
-Upload all files from `Backend/hostinger-deploy/` to your Hostinger account:
-```
-hostinger-deploy/
-├── src/
-├── scripts/
-├── uploads/
-├── .env
-├── package.json
-├── package-lock.json
-└── .htaccess
-```
+## GitHub dashboard (requires repository admin)
 
-### 2. Set Environment Variables in Hostinger
+1. Open repository Settings > Pages. Select Source: GitHub Actions. Do not select branch/root publishing or add a Jekyll starter workflow.
+2. Verify domain ownership under the owning account/organization Pages settings using GitHub's supplied TXT verification record. Keep that TXT record.
+3. Set Custom domain to `faizalamfaizi.com` and save. Frontend/public/CNAME also records that domain.
+4. Review Settings > Environments > github-pages; retain reviewers, timers and branch restrictions. Permit main through the existing policy.
+5. Push changes to main, or manually run `.github/workflows/deploy-pages.yml`. Confirm both build and deployment succeed for the new commit. Record the run URL and commit.
+6. After the DNS check succeeds and a certificate is available, enable Enforce HTTPS.
 
-Go to **Website** → **Domains** → **Manage** → **Passenger Node.js**
+## DNS: change only frontend records
 
-Add these environment variables:
-```
-NODE_ENV=production
-DATABASE_URL=postgresql://neondb_owner:npg_9igcNB1uSoEQ@ep-curly-pond-apj8t7cw.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require
-JWT_SECRET_KEY=blog_secret_key_faizalamfaizi_2026_secure_token
-JWT_SECRET=blog_secret_key_faizalamfaizi_2026_secure_token
-FRONTEND_URL=https://faizalamfaizi.com
-PORT=5000
-```
+Export/screenshot the complete DNS zone first. Edit DNS at the authoritative provider. Do not change nameservers. Do not delete any Hostinger site.
 
-### 3. Install Dependencies
+Replace the apex (@) Hostinger A records with these four GitHub Pages A records:
 
-In Hostinger terminal or SSH:
-```bash
-cd your-app-folder
-npm install
-```
+| Type | Name | Value |
+| --- | --- | --- |
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | iqxintelligencequotient.github.io |
 
-### 4. Initialize Database
+Replace the existing www Hostinger CNAME; do not append a repository path to the new CNAME. Remove conflicting apex AAAA records pointing at Hostinger if present, or replace them with GitHub's documented IPv6 addresses. No AAAA records are required when using these A records. Preserve api records, MX, SPF, DKIM, DMARC, mail/autodiscover, verification TXT and unrelated records. Avoid wildcard records pointing to Pages.
 
-```bash
-npm run seed:admin
-```
+Observed on 2026-10-29: apex A answers 77.37.76.85 and 92.112.198.176; www CNAME www.faizalamfaizi.com.cdn.hstgr.net; api A answers 77.37.76.108 and 92.112.198.67. These are observations, not permanent Hostinger targets. Keep the API values assigned by its existing app. The main domain returned 403 with platform: hostinger and server: hcdn. Publishing a GitHub workflow alone cannot change this DNS routing.
 
-### 5. Restart Application
+## Existing Hostinger backend app
 
-Click **Restart** in Hostinger Passenger settings.
+Open the EXISTING api.faizalamfaizi.com Node.js app > Settings & Redeploy. Select the same repository/main, application root `Backend`, framework Express/Other, install `npm ci --omit=dev`, entry file `src/server.js`, start `npm start`. This backend has no compilation step; do not set Frontend/dist as its output or run the root frontend build. Choose a supported Node version compatible with the lockfile (Node 24 recommended when offered). Keep Hostinger's assigned PORT; server.js reads it. Preserve the existing API domain and TLS configuration.
 
-## 🔍 Verification
+Set server-only environment variables in hPanel: NODE_ENV=production, FRONTEND_URL=https://faizalamfaizi.com, DATABASE_URL (or DB_USER/DB_PASSWORD/DB_HOST/DB_PORT/DB_NAME), JWT_SECRET_KEY, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET. Preserve other required existing server variables. Use existing private values; never put credentials in VITE_ variables. Apply changes and redeploy/restart. Preserve database and uploads. Run migrations only after a database backup and review; no migrations were run here.
 
-Test these URLs after deployment:
+The frontend workflow explicitly sets the public API origin to https://api.faizalamfaizi.com. Local .env overrides should contain public URLs only. Tracked .env files were removed from the current Git index, but old commits still contain them: rotate any real database, JWT, SMTP and Cloudinary secrets previously committed, then update hPanel. Local dependency and .env files remain on disk. History was not rewritten.
 
-1. **Health Check**: `https://api.faizalamfaizi.com/api/health`
-   - Should return: `{"success":true,"message":"Backend is running",...}`
+## Verification after publishing
 
-2. **Root**: `https://api.faizalamfaizi.com/`
-   - Should return: `{"success":true,"message":"Faiz Alam Faizi API is running"}`
+- Homepage and a service direct URL must return 200 from GitHub Pages; source must contain H1, body content, canonical and JSON-LD, without /src/main.jsx.
+- Test direct article refreshes, assets, favicon, manifest, robots.txt, sitemap-index.xml, sitemap.xml, image-sitemap.xml, llms.txt and 404.html.
+- Check apex and www HTTPS redirects, mobile layout, navigation, browser console, contact and newsletter forms, reviews and admin login.
+- Live read-only checks passed: /api/health, /api/posts, /api/categories, /api/tags, /api/review returned 200; contact OPTIONS returned 204 with the frontend allowed origin. This does not prove email delivery, writes, admin authentication or Cloudinary uploads. Verify those with controlled dashboard-assisted tests after deployment.
+- Preserve existing API and email DNS records throughout the change. No hosting sites need deletion.
 
-3. **Login**: `https://faizalamfaizi.com/login`
-   - Should work without CORS errors
+References: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site and https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/
 
-4. **Reviews**: `https://faizalamfaizi.com/blog`
-   - Should load without 504/503 errors
-
-## 🐛 Troubleshooting
-
-### Database Connection Failed
-```
-❌ Check if DATABASE_URL is correctly set in Hostinger
-❌ Verify your Neon database is active
-❌ Check if your IP is whitelisted in Neon dashboard
-```
-
-### 503 Service Unavailable
-```
-✅ Restart the Passenger application
-✅ Check logs in Hostinger for errors
-✅ Run npm install again
-```
-
-### 504 Gateway Timeout
-```
-✅ Check if server is running
-✅ Verify database connection
-✅ Check if PORT is correctly set
-```
-
-## 📝 Important Notes
-
-- The `.htaccess` file handles CORS and routing to Node.js
-- Passenger Node.js automatically loads `.env` files
-- Uploads folder must be writable
-- Use `npm start` for production, `npm run dev` for development
-- Always test locally first before deploying
-
-## 🎯 Success Indicators
-
-✅ No CORS errors in browser console
-✅ No 503/504 errors on API calls
-✅ Database connection successful (check server logs)
-✅ Login works without errors
-✅ Reviews and blog posts load correctly
+Local validation: npm ci succeeded; lint passed with nine existing hook-dependency warnings; build generated 43 public routes plus 404; output verification passed JSON-LD, metadata, FAQ and 2,417 local target checks. Dev server returned 200. Local preview API requests from 127.0.0.1:4173 are not in production CORS allowlist; test production API interactions on the custom domain. No production form submissions or email sends were performed.

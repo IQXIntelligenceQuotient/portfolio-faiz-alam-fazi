@@ -1,4 +1,4 @@
-import { siteMeta } from "./siteMeta";
+import { siteMeta as _siteMeta } from "./siteMeta";
 
 export const serviceSchemaData = {
   legalConsultant: {
