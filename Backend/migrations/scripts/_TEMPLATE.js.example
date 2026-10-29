@@ -1,0 +1,68 @@
+/**
+ * Migration Template
+ * 
+ * Copy this file and rename it with a sequential number prefix:
+ * Example: 001_add_new_field.js
+ * 
+ * Each migration must export two functions:
+ * - up(pool): Applies the migration
+ * - down(pool): Rolls back the migration
+ */
+
+/**
+ * Apply the migration
+ * @param {Pool} pool - PostgreSQL connection pool
+ */
+async function up(pool) {
+  try {
+    console.log('  → Applying migration...');
+    
+    // Example: Add a new column
+    // await pool.query(`
+    //   ALTER TABLE table_name 
+    //   ADD COLUMN new_column VARCHAR(255)
+    // `);
+    
+    // Example: Create a new table
+    // await pool.query(`
+    //   CREATE TABLE IF NOT EXISTS new_table (
+    //     id SERIAL PRIMARY KEY,
+    //     name VARCHAR(255) NOT NULL,
+    //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    //   )
+    // `);
+    
+    console.log('  ✓ Migration applied');
+  } catch (error) {
+    console.error('  ✗ Migration failed:', error.message);
+    throw error;
+  }
+}
+
+/**
+ * Rollback the migration
+ * @param {Pool} pool - PostgreSQL connection pool
+ */
+async function down(pool) {
+  try {
+    console.log('  → Rolling back migration...');
+    
+    // Example: Remove the column
+    // await pool.query(`
+    //   ALTER TABLE table_name 
+    //   DROP COLUMN new_column
+    // `);
+    
+    // Example: Drop the table
+    // await pool.query(`
+    //   DROP TABLE IF EXISTS new_table
+    // `);
+    
+    console.log('  ✓ Migration rolled back');
+  } catch (error) {
+    console.error('  ✗ Rollback failed:', error.message);
+    throw error;
+  }
+}
+
+module.exports = { up, down };

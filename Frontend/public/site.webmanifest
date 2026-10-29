@@ -1,0 +1,21 @@
+{
+  "name": "Legal Bridge LLP®",
+  "short_name": "Legal Bridge",
+  "description": "Corporate, Technology, IP & Cyber Law Practice in Lahore, Pakistan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#161616",
+  "theme_color": "#FD6219",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# React Router — serve index.html for all non-file routes
+Options -MultiViews
+RewriteEngine On
+
+# ── Social bot redirect — serve pre-rendered OG meta from API ────────────────
+# Detects Facebook, WhatsApp, LinkedIn, Twitter, Telegram, Slack crawlers
+# and redirects /blogs/:slug to the API's OG proxy endpoint.
+RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|Facebot|WhatsApp|LinkedInBot|Twitterbot|TelegramBot|Slackbot|Discordbot|Pinterest|Googlebot|bingbot|Applebot|Embedly|Quora|Outbrain|W3C_Validator) [NC]
+RewriteRule ^blogs/(.+)$ https://api.faizalamfaizi.com/og/blogs/$1 [R=302,L]
+
+# ── Static files — serve directly if they exist ──────────────────────────────
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ── Fallback to index.html for React Router ──────────────────────────────────
+RewriteRule ^ index.html [L]
