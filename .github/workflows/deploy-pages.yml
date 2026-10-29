@@ -1,0 +1,46 @@
+name: Deploy frontend to GitHub Pages
+on:
+  push:
+    branches: [main]
+    paths: ['Frontend/**', '.github/workflows/deploy-pages.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: Frontend
+    env:
+      VITE_API_BASE_URL: https://api.faizalamfaizi.com
+      VITE_PUBLIC_SITE_URL: https://faizalamfaizi.com
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+      - uses: actions/configure-pages@v6
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run verify:build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: Frontend/dist
+          include-hidden-files: true
+      - uses: actions/deploy-pages@v5
+        id: deployment

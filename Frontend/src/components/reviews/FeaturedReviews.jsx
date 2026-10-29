@@ -66,7 +66,7 @@ export default function FeaturedReviews({
 
       const API_URL = import.meta.env.VITE_REVIEWS_API
         ? import.meta.env.VITE_REVIEWS_API.replace('/admin/all', '')
-        : `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/review`;
+        : `${import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000")}/api/review`;
       const res = await fetch(`${API_URL}`);
       const data = await res.json();
 

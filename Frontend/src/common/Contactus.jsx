@@ -37,7 +37,7 @@ function Contact_us() {
     }
 
     try {
-      const res = await fetch("https://faizalamfaizi.com/api/contact", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com"}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

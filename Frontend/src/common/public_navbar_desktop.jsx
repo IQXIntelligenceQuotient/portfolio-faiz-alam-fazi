@@ -5,6 +5,7 @@ function PublicNavbarDesktop({
   openDropdown,
   setOpenDropdown,
   ChevronIcon,
+
   desktopDropdownVariants,
   openLoginModal,
 }) {

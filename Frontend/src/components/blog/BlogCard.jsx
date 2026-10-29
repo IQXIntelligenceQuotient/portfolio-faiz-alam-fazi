@@ -7,7 +7,7 @@ const getImageUrl = (imagePath) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
   const path = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-  return `${import.meta.env.VITE_API_BASE_URL}${path}`;
+  return `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}${path}`;
 };
 
 export default function BlogCard({ blog, priority = false }) {

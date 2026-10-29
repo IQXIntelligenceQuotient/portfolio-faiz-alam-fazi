@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-export const copyToClipboard = async (text, successMsg = "Link copied!") => {
+export const copyToClipboard = async (text, _successMsg = "Link copied!") => {
   try {
     await navigator.clipboard.writeText(text);
     return true;

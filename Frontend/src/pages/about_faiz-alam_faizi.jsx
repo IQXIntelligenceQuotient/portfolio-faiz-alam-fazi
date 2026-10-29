@@ -1,3 +1,4 @@
+import SEOHead from "../components/seo/SEOHead.jsx";
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -262,6 +263,7 @@ const PROFESSIONAL_DISCLAIMER =
 export default function AboutFaizAlamFaizi() {
   return (
     <main className="overflow-x-hidden bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.08),transparent_30%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_20%),linear-gradient(180deg,#08101d_0%,#0c1524_40%,#09111d_100%)] text-slate-50">
+      <SEOHead title="About Faiz Alam Faizi | Legal Bridge LLP®" description="Meet Faiz Alam Faizi, Managing Director with Legal Bridge LLP®, coordinating corporate advisory, technology law, intellectual property and cyber law practice in Pakistan." canonical="/about-faiz-alam-faizi" />
       <section className="relative px-4 pb-16 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pb-20 lg:pt-24">
         <div className="mx-auto grid w-full max-w-7xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <motion.div

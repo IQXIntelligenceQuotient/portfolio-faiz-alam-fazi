@@ -1,5 +1,7 @@
+import Services from "./pages/Services.jsx";
+import SEOHead from "./components/seo/SEOHead.jsx";
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, StaticRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./common/Header";
 import Footer from "./common/Footer";
 import StickyActions from "./common/StickyActions.jsx";
@@ -52,9 +54,10 @@ function PageLoader() {
   );
 }
 
-export default function App() {
+export default function App({ url }) {
+  const Router = url ? StaticRouter : BrowserRouter;
   return (
-    <BrowserRouter>
+    <Router location={url}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-orange-500 focus:px-4 focus:py-2 focus:text-white focus:outline-none"
@@ -69,6 +72,7 @@ export default function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/technology-ip-cyber-law-pakistan" element={<TechnologyPractice />} />
@@ -91,6 +95,7 @@ export default function App() {
             <Route path="/blogs/:slug" element={<BlogPost />} />
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/about-faiz-alam-faizi" element={<AboutFaizAlamFaizi />} />
+            <Route path="*" element={<><SEOHead title="Page not found | Faiz Alam Faizi" description="This page could not be found. Explore our services or contact Legal Bridge LLP." noindex /><h1>Page not found</h1><p>Please <a href="/">return home</a> or <a href="/contact">contact us</a>.</p></>} />
             {/* Admin Routes */}
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/categories" element={<Catagories />} />
@@ -102,7 +107,13 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
+      <section className="mx-auto w-full max-w-5xl px-6 py-12" aria-label="Consultation questions">
+        <h2 className="text-2xl font-bold">Planning a consultation</h2>
+        <p className="my-4">Legal Bridge LLP® coordinates legal and business advisory support from Lahore for clients in Pakistan and overseas. Review the relevant service and contact the team to discuss your documents and engagement scope.</p>
+        <details className="py-3"><summary>How can I request a consultation?</summary><p>Use the <a href="/contact">contact page</a> to describe your matter, location and preferred contact details. Consultation allocation depends on availability, conflict checks and document review.</p></details>
+        <details className="py-3"><summary>Can overseas clients request support?</summary><p>Yes. Overseas clients can contact the team about Pakistan-related matters. The team confirms the applicable forum, documents and written engagement scope before work proceeds.</p></details>
+      </section>
       <Footer />
-    </BrowserRouter>
+    </Router>
   );
 }

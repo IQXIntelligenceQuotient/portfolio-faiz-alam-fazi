@@ -114,7 +114,7 @@ export default function Reviews() {
 
   async function fetchReviews() {
     try {
-      const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
       const res = await fetch(`${API_URL}/api/review`);
       const data = await res.json();
       
@@ -139,7 +139,7 @@ export default function Reviews() {
     setFormStatus(null);
 
     try {
-      const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? "https://api.faizalamfaizi.com" : "http://localhost:5000");
       const res = await fetch(`${API_URL}/api/review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

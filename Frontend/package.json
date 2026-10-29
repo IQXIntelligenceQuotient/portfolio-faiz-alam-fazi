@@ -5,9 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run prerender && npm run generate:seo",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prerender": "node scripts/prerender.mjs",
+    "verify:build": "node scripts/verify-build.mjs",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "generate:image-sitemap": "node scripts/generate-image-sitemap.mjs",
+    "generate:llms": "node scripts/generate-llms.mjs",
+    "generate:seo": "npm run generate:sitemap && npm run generate:image-sitemap && npm run generate:llms"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",

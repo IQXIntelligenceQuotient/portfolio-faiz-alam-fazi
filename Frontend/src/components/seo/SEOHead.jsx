@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://faizalamfaizi.com';
-const DEFAULT_OG = `${SITE_URL}/og-default.jpg`;
+const DEFAULT_OG = `${SITE_URL}/1-Best-Legal_Consultant-near-me.webp`;
 
 /**
  * Reusable SEO Head component — Pakistan SEO + GEO + AEO optimized
@@ -22,13 +22,14 @@ export default function SEOHead({
   modifiedTime,
   category,
 }) {
+  schema ||= { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: canonical?.startsWith('http') ? canonical : SITE_URL + (canonical || '/') };
   const fullCanonical = canonical?.startsWith('http')
     ? canonical
     : `${SITE_URL}${canonical || '/'}`;
 
   const fullOgImage = ogImage?.startsWith('http')
     ? ogImage
-    : `${SITE_URL}${ogImage || DEFAULT_OG}`;
+    : (ogImage ? `${SITE_URL}${ogImage}` : DEFAULT_OG);
 
   return (
     <Helmet>
@@ -46,8 +47,8 @@ export default function SEOHead({
       <link rel="canonical" href={fullCanonical} />
 
       {/* Hreflang */}
-      <link rel="alternate" hreflang="en-pk" href={fullCanonical} />
-      <link rel="alternate" hreflang="x-default" href={fullCanonical} />
+      <link rel="alternate" hrefLang="en-pk" href={fullCanonical} />
+      <link rel="alternate" hrefLang="x-default" href={fullCanonical} />
 
       {/* Open Graph — base */}
       <meta property="og:type" content={ogType} />
