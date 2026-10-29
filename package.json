@@ -1,0 +1,42 @@
+{
+  "name": "faizalamfaizi-blog-system",
+  "version": "1.0.0",
+  "description": "Faiz Alam Faizi Blog System - Full Stack Application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\" --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgMagenta.bold\"",
+    "backend": "cd Backend && npm run dev",
+    "frontend": "cd Frontend && npm run dev",
+    "start": "concurrently \"npm run backend:start\" \"npm run frontend:preview\" --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgMagenta.bold\"",
+    "backend:start": "cd Backend && npm start",
+    "frontend:preview": "cd Frontend && npm run preview",
+    "install:all": "npm install && cd Backend && npm install && cd ../Frontend && npm install",
+    "seed:admin": "cd Backend && npm run seed:admin",
+    "build": "cd Frontend && npm run build"
+  },
+  "keywords": [
+    "blog",
+    "cms",
+    "react",
+    "express",
+    "postgresql"
+  ],
+  "author": "Faiz Alam Faizi",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.11",
+    "pg": "^8.21.0"
+  }
+}

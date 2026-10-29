@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hero above-fold CSS animations — no JS, no TBT */
+@keyframes hero-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-hero-fade {
+  animation: hero-fade 0.6s ease-out both;
+}
+.animate-hero-fade-delay {
+  animation: hero-fade 0.6s 0.1s ease-out both;
+}
+.animate-hero-fade-delay2 {
+  animation: hero-fade 0.6s 0.2s ease-out both;
+}
+
+/* Floating image animations — CSS-only, runs on compositor thread */
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes float-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+}
+
+.animate-float-up {
+  animation: float-up 4.2s ease-in-out infinite;
+}
+.animate-float-down {
+  animation: float-down 4.8s ease-in-out infinite;
+}
+.animate-float-up-slow {
+  animation: float-up 4.6s ease-in-out infinite;
+}
+.animate-float-down-slow {
+  animation: float-down 4.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-fade,
+  .animate-hero-fade-delay,
+  .animate-hero-fade-delay2,
+  .animate-float-up,
+  .animate-float-down,
+  .animate-float-up-slow,
+  .animate-float-down-slow {
+    animation: none;
+  }
+}
+
+/* Ensure visible focus outlines for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Skip-to-content link */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only.focus\:not-sr-only:focus,
+.focus\:not-sr-only:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility classes */
+.container-shell {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.section-gap {
+  @apply py-16 sm:py-20 lg:py-24;
+}
+
+.card-dark {
+  @apply rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-amber-400;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-white/15 px-6 py-3 font-semibold text-white transition hover:bg-white/10;
+}
+
+.section-title {
+  @apply text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl;
+}
+
+.section-text {
+  @apply text-base leading-7 text-slate-300 sm:text-lg;
+}
