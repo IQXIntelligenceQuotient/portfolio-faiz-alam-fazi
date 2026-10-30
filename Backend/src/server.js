@@ -28,7 +28,7 @@ const app = express();
 // Reflect only explicitly allowed frontend origins and vary caches by Origin.
 app.use(require('cors')({
   origin: (origin, callback) => {
-    const allowed = ['https://faizalamfaizi.com', 'https://www.faizalamfaizi.com',
+    const allowed = ['https://iqxintelligencequotient.github.io', 'https://faizalamfaizi.com', 'https://www.faizalamfaizi.com',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:5173', 'http://localhost:5174'] : []),
       ...(process.env.FRONTEND_URL || '').split(',').map(s => s.trim()).filter(Boolean)];
     callback(null, !origin || allowed.includes(origin));

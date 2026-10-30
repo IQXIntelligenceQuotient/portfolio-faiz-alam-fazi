@@ -1,3 +1,15 @@
+## Current target: GitHub repository URL (no domain access)
+
+The current build targets https://iqxintelligencequotient.github.io/portfolio-faiz-alam-fazi/ . In repository Settings > Pages, REMOVE the saved faizalamfaizi.com custom domain and keep Source = GitHub Actions. Changing CNAME in an Actions artifact does not change the repository's Pages domain setting.
+
+Commit/push the updated workflow and Frontend sources, then run the latest deployment. The artifact must contain index.html at its root, not inside a second Frontend or dist folder. The build still uploads Frontend/dist. It excludes CNAME for github.io, uses the repository base path in assets, React Router, native links, manifests, canonical URLs, JSON-LD and SEO files, and retains prerendering.
+
+On the existing Hostinger backend, set FRONTEND_URL=https://iqxintelligencequotient.github.io and deploy the updated Backend/src/server.js. CORS origins contain the scheme and host only, with NO repository path. Custom-domain origins remain allowed. Do not change API or email DNS. Test forms after backend redeployment; a successful frontend build does not prove API CORS is updated live.
+
+For a future custom-domain cutover, set DEPLOYMENT_SITE_URL=https://faizalamfaizi.com in the workflow, rebuild and reconfigure the Pages domain and DNS using the instructions below. This single setting controls both root and repository deployments. GitHub project robots.txt is published under the repository path; crawlers only consult the account origin's root robots.txt, which this repository cannot control.
+
+---
+
 # Production deployment: GitHub Pages + Hostinger
 
 Repository: https://github.com/IQXIntelligenceQuotient/portfolio-faiz-alam-fazi

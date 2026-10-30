@@ -2,4 +2,4 @@ Brand: Faiz Alam Faizi
 Organization: Legal Bridge LLP®
 Developer note: React pages are statically rendered at build time.
 Stack: Vite, React, Tailwind CSS, Motion; Express and PostgreSQL API on Hostinger.
-Contact: https://faizalamfaizi.com/contact
+Contact: https://iqxintelligencequotient.github.io/portfolio-faiz-alam-fazi/contact

@@ -338,7 +338,7 @@ export default function BlogPost() {
             </p>
             <ShareButtons
               title={blog.title}
-              url={typeof window !== "undefined" ? `${window.location.origin}/blogs/${blog.slug}` : `https://faizalamfaizi.com/blogs/${blog.slug}`}
+              url={`${import.meta.env.VITE_PUBLIC_SITE_URL}/blogs/${blog.slug}`}
               variant="public"
             />
           </div>
