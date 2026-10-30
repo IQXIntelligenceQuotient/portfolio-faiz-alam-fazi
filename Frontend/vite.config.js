@@ -1,10 +1,13 @@
+import { siteUrl, siteBase } from './scripts/deployment-config.mjs';
+import { deploymentUrls } from './scripts/deployment-babel.mjs';
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-    base: "/",
-  plugins: [react(), tailwindcss()],
+    base: siteBase,
+  define: { "import.meta.env.VITE_PUBLIC_SITE_URL": JSON.stringify(siteUrl) },
+  plugins: [react({ babel: { plugins: [[deploymentUrls, { siteUrl }]] } }), tailwindcss()],
   build: {
     cssCodeSplit: true,
     sourcemap: false,

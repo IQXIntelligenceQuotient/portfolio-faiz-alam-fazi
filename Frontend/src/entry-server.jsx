@@ -1,3 +1,4 @@
+import { sitePath } from './utils/deployment.js';
 import React from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import { HelmetProvider } from 'react-helmet-async';
@@ -9,7 +10,7 @@ export async function render(url) {
     const output = new PassThrough(); let text = '';
     output.on('data', chunk => { text += chunk; });
     output.on('end', () => resolve(text)); output.on('error', reject);
-    const stream = renderToPipeableStream(<HelmetProvider context={context}><App url={url} /></HelmetProvider>, {
+    const stream = renderToPipeableStream(<HelmetProvider context={context}><App url={sitePath(url)} /></HelmetProvider>, {
       onAllReady() { stream.pipe(output); }, onError: reject,
     });
   });

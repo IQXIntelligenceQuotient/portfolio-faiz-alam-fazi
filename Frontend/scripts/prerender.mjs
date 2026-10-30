@@ -1,3 +1,4 @@
+import { siteUrl, siteBase } from './deployment-config.mjs';
 import fs from 'node:fs/promises';
 import { createServer } from 'vite';
 async function fetchPublic(url, options) {
@@ -25,6 +26,14 @@ try {
     const result = await response.json(); Object.assign(post, result.data || result);
     routes.push(`/blogs/${post.slug}`);
   }
+  // CNAME cannot switch the repository setting. The github.io build must not ship it.
+  if (new URL(siteUrl).hostname.endsWith('.github.io')) await fs.rm('dist/CNAME', {force:true});
+  else await fs.writeFile('dist/CNAME', new URL(siteUrl).hostname + '\n');
+  const manifest = JSON.parse(await fs.readFile('public/site.webmanifest', 'utf8'));
+  const assetPath = value => value.startsWith(siteBase) ? value : siteBase + value.replace(/^\//, '');
+  manifest.start_url = siteBase; manifest.scope = siteBase;
+  manifest.icons = manifest.icons.map(icon => ({...icon, src: assetPath(icon.src)}));
+  await fs.writeFile('dist/site.webmanifest', JSON.stringify(manifest, null, 2));
   const template = await fs.readFile('dist/index.html', 'utf8');
   // SEOHead owns route metadata. Retain only encoding, viewport, theme, icons and build assets.
   const clean = template.replace(/<title>[\s\S]*?<\/title>/g,'').replace(/<meta\s+(?:name="(?:description|keywords|author|robots|geo\.[^"]+|ICBM|twitter:[^"]+)"|property="[^"]+")[^>]*>/g,'').replace(/<link\s+rel="(?:canonical|alternate)"[^>]*>/g,'').replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g,'');

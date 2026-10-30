@@ -1,3 +1,4 @@
+import { siteBase } from './utils/deployment.js';
 import Services from "./pages/Services.jsx";
 import SEOHead from "./components/seo/SEOHead.jsx";
 import React, { lazy, Suspense } from "react";
@@ -57,7 +58,7 @@ function PageLoader() {
 export default function App({ url }) {
   const Router = url ? StaticRouter : BrowserRouter;
   return (
-    <Router location={url}>
+    <Router basename={siteBase} location={url}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-orange-500 focus:px-4 focus:py-2 focus:text-white focus:outline-none"
