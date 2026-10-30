@@ -11,9 +11,10 @@ export default function BlogList() {
 
   // Fetch blogs from API
   useEffect(() => {
+    const snapshot = initialPosts();
     const fetchBlogs = async () => {
       try {
-        setLoading(true);
+        setLoading(snapshot.length === 0);
         const API_URL = import.meta.env.VITE_POSTS_API || `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}/api/posts`;
         const response = await fetch(API_URL);
         

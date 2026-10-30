@@ -142,9 +142,13 @@ export default function BlogPost() {
 
   // Fetch blog post from API
   useEffect(() => {
+    const snapshot = initialPost(slug);
+    // Reset content when navigating between article slugs.
+    setBlog(snapshot);
+    setError(null);
     const fetchBlog = async () => {
       try {
-        setLoading(true);
+        setLoading(!snapshot);
         const API_URL = import.meta.env.VITE_POSTS_API || `${(import.meta.env.VITE_API_BASE_URL || "https://api.faizalamfaizi.com")}/api/posts`;
         const response = await fetch(`${API_URL}/${slug}`);
         
@@ -191,7 +195,7 @@ export default function BlogPost() {
         }
       } catch (err) {
         console.error('Error fetching blog:', err);
-        setError('error');
+        if (!snapshot) setError('error');
       } finally {
         setLoading(false);
       }
