@@ -1,0 +1,14 @@
+# Apache/LiteSpeed on Hostinger: serve the generated route/index.html files.
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+RewriteEngine On
+
+# Existing public pages, assets and route directories are served directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Admin needs a client entry; backend authentication protects its data.
+# Unknown public URLs retain a real 404 rather than the homepage HTML.
+RewriteRule ^admin(?:/.*)?$ index.html [L]
