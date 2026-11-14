@@ -3,7 +3,7 @@ name: Publish frontend for Hostinger
 on:
   push:
     branches: [main]
-    paths: ['Frontend/**', '.github/workflows/deploy-hostinger.yml']
+    paths: ['Frontend/**', 'scripts/check-repository.mjs', '.gitignore', '.github/workflows/deploy-hostinger.yml']
   workflow_dispatch:
 
 permissions:
@@ -34,6 +34,8 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: Frontend/package-lock.json
+      - name: Check repository for private files and archives
+        run: node ../scripts/check-repository.mjs
       - run: npm ci
       - run: npm run lint
       - run: npm run build

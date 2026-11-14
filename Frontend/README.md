@@ -12,4 +12,4 @@ Vite, React, Tailwind CSS and Motion, with custom React DOM Server prerendering.
 
 The default production origin is https://faizalamfaizi.com; `DEPLOYMENT_SITE_URL` can override it consistently for Vite, routing, rendering and SEO generation. Hostinger public_html publication requires a domain-root build. `VITE_API_BASE_URL` is a public API URL, never a secret.
 
-See ../DEPLOYMENT_CHECKLIST.md for Hostinger configuration. Keep editing source on `main`; the `frontend` branch contains generated files only.
+See ../README.md for Hostinger configuration. Keep editing source on `main`; the `frontend` branch contains generated files only.

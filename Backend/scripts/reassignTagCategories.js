@@ -20,7 +20,9 @@ const API_BASE = process.env.API_BASE ||
   'http://localhost:5000';
 
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    || 'removed';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'removed';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) { throw new Error('Provide ADMIN_EMAIL and ADMIN_PASSWORD through the environment.'); }
+
 
 // ── Tag → Category mapping ────────────────────────────────────────────────────
 const TAG_CATEGORY_MAP = {

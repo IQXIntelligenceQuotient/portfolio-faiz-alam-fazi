@@ -1,29 +1,23 @@
 # Faiz Alam Faizi website
 
-Source code lives on `main` in `Frontend/` (Vite/React with build-time HTML rendering) and `Backend/` (Express/PostgreSQL API).
+The `main` branch contains the website source in `Frontend/` and the API in `Backend/`.
 
-## Hosting
+## Development
 
-- Frontend: GitHub Actions builds and verifies `Frontend/dist`, then publishes only generated static files to the `frontend` branch. Connect that branch to Hostinger's static Git integration with destination `public_html`.
-- Backend: separate Hostinger Node.js app, source branch `main`, application root `Backend`, entry `src/server.js`.
-- GitHub Pages is not used by the current workflow.
+Use Node.js 24. Install dependencies with `npm run install:all`, then start both applications with `npm run dev`.
 
-See [the deployment checklist](DEPLOYMENT_CHECKLIST.md) for hPanel configuration and validation steps.
-
-## Frontend development
-
-Use Node 24 and run:
-
-    npm ci --prefix Frontend
-    npm run dev --prefix Frontend
-
-Build and check production output:
+Frontend checks:
 
     npm run lint --prefix Frontend
     npm run build --prefix Frontend
     npm run verify:build --prefix Frontend
-    npm run publish:frontend --prefix Frontend -- --dry-run
 
-Production defaults to https://faizalamfaizi.com with API https://api.faizalamfaizi.com. Each public route has generated HTML before JavaScript runs. Published articles are fetched from the public API during the build; article discovery failures stop publication. Re-run the workflow after CMS article changes. The regular publish command pushes the generated branch; dry-run validates it without a remote write.
+## Deployment
 
-Private server settings belong in Hostinger environment variables. `.env` and dependency folders are ignored by Git. Keep private credentials out of frontend build variables.
+The **Publish frontend for Hostinger** workflow builds and validates `Frontend/dist`, then publishes generated static files to the `frontend` branch. Connect that branch to Hostinger Git with destination `public_html`. Edit source on `main`; do not edit generated files on `frontend`.
+
+The separate Hostinger Node.js app uses branch `main`, application directory `Backend`, entry file `src/server.js`, build command `npm run build`, and start command `npm start`.
+
+The production website is https://faizalamfaizi.com and the API is https://api.faizalamfaizi.com. Public pages are prerendered with content, metadata, structured data and SEO files. Run the frontend workflow again after publishing or editing articles to update static pages and sitemaps.
+
+Credentials belong in Hostinger environment variables. Keep local `.env`, uploads, database exports, archives and recovery copies outside Git. Use placeholder-only `.env.example` files for configuration names. See `Backend/README.md` and `Frontend/README.md` for application-specific commands.

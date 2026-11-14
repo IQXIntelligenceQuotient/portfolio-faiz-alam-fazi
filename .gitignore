@@ -6,3 +6,29 @@ dist-ssr/
 !.env.example
 *.log
 .deployment-check/
+
+# Local tools, editor data, generated archives and recovery packages.
+/.kiro/
+/.vscode/
+/.idea/
+/scratch/
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.bak
+*.bundle
+**/hostinger-deploy/
+
+# Runtime uploads and private exports must not be committed.
+/Backend/uploads/*
+!/Backend/uploads/.gitkeep
+*.sql
+*.dump
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12

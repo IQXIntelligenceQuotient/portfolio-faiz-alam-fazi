@@ -13,8 +13,12 @@
 require('dotenv').config();
 
 const API_BASE = process.env.VITE_API_BASE_URL || 'http://localhost:5000';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'removed';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'removed';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD must be provided through the environment.');
+}
+
 
 // ── Tag data keyed by category name ──────────────────────────────────────────
 const TAG_DATA = {
