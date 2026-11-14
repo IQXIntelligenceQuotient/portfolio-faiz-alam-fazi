@@ -1,0 +1,42 @@
+name: Publish frontend for Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths: ['Frontend/**', '.github/workflows/deploy-hostinger.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hostinger-frontend
+  cancel-in-progress: true
+
+jobs:
+  publish-frontend:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: Frontend
+    env:
+      DEPLOYMENT_SITE_URL: https://faizalamfaizi.com
+      VITE_API_BASE_URL: https://api.faizalamfaizi.com
+      VITE_PUBLIC_SITE_URL: https://faizalamfaizi.com
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run verify:build
+      - name: Publish only generated files to frontend branch
+        run: npm run publish:frontend

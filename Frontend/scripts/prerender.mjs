@@ -26,9 +26,8 @@ try {
     const result = await response.json(); Object.assign(post, result.data || result);
     routes.push(`/blogs/${post.slug}`);
   }
-  // CNAME cannot switch the repository setting. The github.io build must not ship it.
-  if (new URL(siteUrl).hostname.endsWith('.github.io')) await fs.rm('dist/CNAME', {force:true});
-  else await fs.writeFile('dist/CNAME', new URL(siteUrl).hostname + '\n');
+  // Hostinger configures the domain in hPanel; CNAME is a GitHub Pages artifact.
+  await fs.rm('dist/CNAME', {force:true});
   const manifest = JSON.parse(await fs.readFile('public/site.webmanifest', 'utf8'));
   const assetPath = value => value.startsWith(siteBase) ? value : siteBase + value.replace(/^\//, '');
   manifest.start_url = siteBase; manifest.scope = siteBase;
