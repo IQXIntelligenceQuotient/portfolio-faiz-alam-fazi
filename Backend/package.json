@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "build": "node --check src/server.js",
     "start": "node src/server.js",
     "seed:admin": "node scripts/seedAdmin.js",
     "seed:tags": "node scripts/seedTags.js",
